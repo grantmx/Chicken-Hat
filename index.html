@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
     <head>
         <!-- this is our web page, tab, and search engine results title -->
@@ -51,17 +52,21 @@
 
 
 
-        <!-- this script tag is for JavaScript -->
-        <script>
-            // Javascript comment
-            /** Javascript comment **/
-        </script>
+       
     </head>
 
     <body>
 
         <!-- Website Header -->
         <header class="header">
+
+            <button type="button" id="bobContactButton">
+                save contact
+            </button>
+
+            <button type="button" id="sallyContactButton">
+                save contact
+            </button>
 
             <!-- Main Navigation -->
             <nav class="mainNav">
@@ -83,6 +88,9 @@
                 <img class="logo" width="50" height="100" alt="chicken hat logo" src="/assets/apple-touch-icon.png" />
             </a>
         </header>
+
+
+        
 
 
 
@@ -472,6 +480,52 @@
     
 
         <nav>dfasda</nav>
+
+
+
+         <!-- this script tag is for JavaScript -->
+         <script>
+            (function(){
+                function createVcard(contact){
+                    // create a vcard file
+                    const vcard = `BEGIN:VCARD\nVERSION:4.0\nFN:"${contact.name}"\nTEL;TYPE=work,voice:"${contact.phone}"\nEMAIL:"${contact.email}""\nURL:"${contact.url}"\nEND:VCARD`;
+                    const blob = new Blob([vcard], { type: "text/vcard" });
+                    const url = URL.createObjectURL(blob);
+                    
+                    const newLink = document.createElement('a');
+                    newLink.download = contact.name + ".vcf";
+                    newLink.textContent = contact.name;
+                    newLink.href = url;
+                    
+                    newLink.click();
+                }
+
+
+                document.getElementById("bobContactButton").addEventListener("click", () => {
+                    const contact = {
+                        name: "John Smith",
+                        phone: "555-555-5555",
+                        email: "john@example.com",
+                        url: "http://google.com"
+                    };
+
+                    createVcard(contact)
+                });
+
+
+                document.getElementById("sallyContactButton").addEventListener("click", () => {
+                    const contact = {
+                        name: "John Smith",
+                        phone: "555-555-5555",
+                        email: "john@example.com",
+                        url: "http://google.com"
+                    };
+
+                    createVcard(contact)
+                });
+            }())
+        
+        </script>
 
     </body>
 </html>
