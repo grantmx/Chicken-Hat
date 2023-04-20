@@ -491,18 +491,35 @@
          <!-- this script tag is for JavaScript -->
          <script>
             (function(){
-                function createVcard(contact){
-                    // create a vcard file
-                    const vcard = `BEGIN:VCARD\nVERSION:4.0\nFN:"${contact.name}"\nTEL;TYPE=work,voice:"${contact.phone}"\nEMAIL:"${contact.email}""\nURL:"${contact.url}"\nEND:VCARD`;
+                function makeVCard({ name, org, title, phone, address, email, url }) {
+                    const vCard = `
+                        BEGIN:VCARD
+                        VERSION:3.0
+                        ${name && `FN:${name}`}
+                        ${org && `ORG:${org}`}
+                        ${title && `TITLE:${title}`}
+                        ${phone && `TEL;TYPE=WORK,VOICE:${phone}`}
+                        ${address && `ADR;TYPE=WORK,PREF:;;${address}`}
+                        ${email && `EMAIL:${email}`}
+                        ${url && `URL:${url}`}
+                        REV:${new Date().toISOString()}
+                        END:VCARD`;
+
+                    return vCard;
+                }
+
+
+                function createVCard(contact){
+                    const vcard = makeVCard(contact)
                     const blob = new Blob([vcard], { type: "text/vcard" });
-                    const url = URL.createObjectURL(blob);
                     
                     const newLink = document.createElement('a');
                     newLink.download = contact.name + ".vcf";
-                    newLink.textContent = contact.name;
-                    newLink.href = url;
+                    newLink.href = URL.createObjectURL(blob);
                     
                     newLink.click();
+
+                    URL.revokeObjectURL(a.href);
                 }
 
 
@@ -515,7 +532,7 @@
                         url: "http://google.com"
                     };
 
-                    createVcard(contact)
+                    createVCard(contact)
                 });
 
 
@@ -528,11 +545,12 @@
                         url: "http://google.com"
                     };
 
-                    createVcard(contact)
+                    createVCard(contact)
                 });
             }())
         
         </script>
+
 
     </body>
 </html>
