@@ -510,16 +510,15 @@
 
 
                 function createVCard(contact){
+                    const newLink = document.createElement('a');
                     const vcard = makeVCard(contact)
                     const blob = new Blob([vcard], { type: "text/vcard" });
-                    
-                    const newLink = document.createElement('a');
-                    newLink.download = contact.name + ".vcf";
+
                     newLink.href = URL.createObjectURL(blob);
-                    
+                    newLink.download = contact.name + ".vcf";
                     newLink.click();
 
-                    URL.revokeObjectURL(a.href);
+                    URL.revokeObjectURL(newLink.href);
                 }
 
 
